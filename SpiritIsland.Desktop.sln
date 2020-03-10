@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiritIsland.Desktop", "SpiritIsland.Desktop\SpiritIsland.Desktop.csproj", "{1F650392-B30C-43C3-A9DF-1F80EFBE08E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiritIsland.Domain", "SpiritIsland.Domain\SpiritIsland.Domain.csproj", "{BC330156-F57F-433A-B8FF-A854F665DDBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F650392-B30C-43C3-A9DF-1F80EFBE08E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F650392-B30C-43C3-A9DF-1F80EFBE08E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F650392-B30C-43C3-A9DF-1F80EFBE08E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F650392-B30C-43C3-A9DF-1F80EFBE08E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC330156-F57F-433A-B8FF-A854F665DDBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC330156-F57F-433A-B8FF-A854F665DDBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC330156-F57F-433A-B8FF-A854F665DDBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC330156-F57F-433A-B8FF-A854F665DDBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A83B1DAA-3AEA-470D-9922-01B2F43368D6}
+	EndGlobalSection
+EndGlobal
