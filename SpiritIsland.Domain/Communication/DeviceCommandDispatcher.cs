@@ -1,4 +1,6 @@
 ﻿
+using System.Text;
+
 namespace SpiritIsland.Domain.Communication
 {
     public class DeviceCommandDispatcher : IDeviceCommandDispatcher
@@ -13,9 +15,10 @@ namespace SpiritIsland.Domain.Communication
 
         private void DeviceCommunication_DataReceived(byte[] data)
         {
-            var command = data.ToString();
-            if (command == "EXPLORE") _game.Explore();
-            else if (command == "ADVANCE") _game.Advance();
+            var command = Encoding.Default.GetString(data);
+            if (command.Contains("START")) _game.Start();
+            else if (command.Contains("EXPLORE")) _game.Explore();
+            else if (command.Contains("ADVANCE")) _game.Advance();
         }
     }
 }

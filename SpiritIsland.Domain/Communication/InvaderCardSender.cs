@@ -22,7 +22,8 @@ namespace SpiritIsland.Domain.Communication
             AppendInvaderCard(board, build, builder);
             AppendEscalation(explore, builder);
 
-            _deviceCommunication.Send(builder.ToString());
+            var str = builder.ToString();
+            _deviceCommunication.Send(str);
         }
 
         private static void AppendInvaderCard(Board board, InvaderCard invaderCard, StringBuilder builder)
@@ -36,7 +37,7 @@ namespace SpiritIsland.Domain.Communication
             for (var i = 0; i < 8; i++)
             {
                 var land = board.GetLandTypeById(i);
-                builder.Append(invaderCard.Lands.Contains(land) ? "1" : "0");
+                builder.Append(invaderCard.Lands.Contains(land) || (i < 3 && invaderCard.Lands.Contains(Land.Coastal)) ? "1" : "0");
             }
         }
 

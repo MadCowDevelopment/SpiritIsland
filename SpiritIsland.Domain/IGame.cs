@@ -7,5 +7,7 @@ namespace SpiritIsland.Domain
         void Explore();
         void Advance();
         event Action GameLost;
+
+        void Start();
     }
 }

@@ -18,7 +18,7 @@ namespace SpiritIsland.Domain
         private InvaderCard _currentExplore;
         private InvaderCard _currentBuild;
         private InvaderCard _currentRavage;
-
+        private bool _isRunning;
 
         public Game(
             IBoardRepository boardRepository,
@@ -32,14 +32,27 @@ namespace SpiritIsland.Domain
 
         public void Start()
         {
+            if(_isRunning)
+            {
+                return;
+            }
+
+            _isRunning = true;
+            GameStarted?.Invoke();
             Explore();
         }
 
         public void Explore()
         {
-            if (_invaderDeck.IsEmpty) GameLost?.Invoke();
+            if (_invaderDeck.IsEmpty)
+            {
+                SendGameEndData();               
+                GameLost?.Invoke();
+                return;
+            }
+
             _currentExplore = _invaderDeck.Dequeue();
-            SendCardData();
+            SendExploreData();
         }
 
         public void Advance()
@@ -47,16 +60,33 @@ namespace SpiritIsland.Domain
             _currentRavage = _currentBuild;
             _currentBuild = _currentExplore;
             _currentExplore = null;
-            SendCardData();
+            SendAdvanceData();
         }
 
+        public event Action GameStarted;
         public event Action GameLost;
-
-        private void SendCardData()
+        
+        private void SendExploreData()
         {
             foreach (var board in _boards)
             {
-                _invaderCardSender.Send(board, _currentExplore, _currentBuild, _currentRavage);
+                _invaderCardSender.Send(board, _currentExplore, null, null);
+            }
+        }
+
+        private void SendAdvanceData()
+        {
+            foreach (var board in _boards)
+            {
+                _invaderCardSender.Send(board, null, _currentBuild, _currentRavage);
+            }
+        }
+
+        private void SendGameEndData()
+        {
+            foreach (var board in _boards)
+            {
+                _invaderCardSender.Send(board, null, null, null);
             }
         }
 

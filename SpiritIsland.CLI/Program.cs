@@ -10,13 +10,15 @@ namespace SpiritIsland.CLI
 {
     class Program
     {
+        private static readonly ManualResetEventSlim _startEvent = new ManualResetEventSlim();
+
         private static readonly ManualResetEventSlim _resetEvent = new ManualResetEventSlim();
 
         static void Main(string[] args)
         {
             PrintIntro();
 
-            var portName = args.Length == 1 ? args[0] : "COM1";
+            var portName = args.Length == 1 ? args[0] : "COM3";
             GameLoop(portName);
         }
 
@@ -26,17 +28,26 @@ namespace SpiritIsland.CLI
             {
                 var boardRepository = new InMemoryBoardRepository();
                 var deviceCommunication = new SerialPortDeviceCommunication(portName);
+                await deviceCommunication.Connect();
                 var invaderCardSender = new InvaderCardSender(deviceCommunication);
-                
+
+                Console.WriteLine("Waiting for the game to start...");
+
                 var game = new Game(boardRepository, invaderCardSender, new InvaderDeckFactory());
+                game.GameStarted += () =>
+                {
+                    _startEvent.Set();
+                    Console.Clear();
+                };
+
                 game.GameLost += () => _resetEvent.Set();
 
                 new DeviceCommandDispatcher(deviceCommunication, game);
 
                 await game.Initialize(new GameSettings(new []{"C"}));
-                game.Start();
             });
 
+            _startEvent.Wait();
             _resetEvent.Wait();
         }
 
@@ -45,10 +56,7 @@ namespace SpiritIsland.CLI
             Console.Clear();
             Console.WriteLine("Welcome to Spirit Island!");
             Console.WriteLine("-------------------------");
-            Console.WriteLine();
-            Console.WriteLine("Press any key to start a new game.");
-            Console.ReadKey(true);
-            Console.Clear();
+            Console.WriteLine();           
         }
     }
 }

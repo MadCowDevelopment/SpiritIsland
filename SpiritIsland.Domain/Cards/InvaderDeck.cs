@@ -11,7 +11,7 @@ namespace SpiritIsland.Domain.Cards
             _cards = new Queue<InvaderCard>(cards);
         }
 
-        public bool IsEmpty => _cards.Count > 0;
+        public bool IsEmpty => _cards.Count == 0;
 
         public InvaderCard Dequeue()
         {
