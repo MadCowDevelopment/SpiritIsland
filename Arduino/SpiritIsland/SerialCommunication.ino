@@ -1,7 +1,7 @@
 void readSerialPort() {
  
  if (Serial.available() > 0) {
-   String str = Serial.readString();
+   String str = Serial.readStringUntil('\n');
 
    if(str.startsWith("CONNECT")){
     connected = true;
