@@ -50,7 +50,8 @@ void cycleColors(int delayMs) {
 }
 
 void cycleLands() {
-int delayMs = 200;
+  int seq[8] = { 1,2,4,8,16,32,64,128 };
+  int delayMs = 200;
   for(int i=0; i<8; i++) {
     digitalWrite(LATCH, LOW);
     shiftOut(SER, CLK, MSBFIRST, 0);

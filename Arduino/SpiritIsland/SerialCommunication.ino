@@ -1,4 +1,3 @@
-
 void readSerialPort() {
  
  if (Serial.available() > 0) {
