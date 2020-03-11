@@ -9,21 +9,21 @@ void topButtonPressed() {
   if(!started) return;
   if(lastButton == TOP) return;  
   lastButton = TOP;  
-  Serial.print("EXPLORE");
+  Serial.println("EXPLORE");
 }
 
 void middleButtonPressed() {
+  if(!connected) return;
   if(started) return;
   if(lastButton == MIDDLE) return;
   lastButton = MIDDLE;
-  Serial.print("START");
+  Serial.println("START");
   started = true;  
 }
 
 void bottomButtonPressed() {
-  Serial.print("I'm here");
   if(!started) return;
   if(lastButton == BOTTOM) return;  
   lastButton = BOTTOM;  
-  Serial.print("ADVANCE");
+  Serial.println("ADVANCE");
 }

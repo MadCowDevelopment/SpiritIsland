@@ -10,12 +10,11 @@ namespace SpiritIsland.Domain.Communication
         public DeviceCommandDispatcher(IDeviceCommunication deviceCommunication, IGame game)
         {
             _game = game;
-            deviceCommunication.DataReceived += DeviceCommunication_DataReceived;
+            deviceCommunication.CommandReceived += CommandReceived;
         }
 
-        private void DeviceCommunication_DataReceived(byte[] data)
+        private void CommandReceived(string command)
         {
-            var command = Encoding.Default.GetString(data);
             if (command.Contains("START")) _game.Start();
             else if (command.Contains("EXPLORE")) _game.Explore();
             else if (command.Contains("ADVANCE")) _game.Advance();

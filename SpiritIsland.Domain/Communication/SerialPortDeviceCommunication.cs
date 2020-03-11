@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace SpiritIsland.Domain.Communication
                     {
                         Console.Write(".");
                         _serialPort.Open();
-                        _serialPort.Write("CONNECT");
+                        Send("CONNECT");
                         connected = true;
                     }
                     catch
@@ -43,20 +44,19 @@ namespace SpiritIsland.Domain.Communication
 
         public void Send(string text)
         {
-            _serialPort.Write(text);
+            _serialPort.WriteLine(text);
         }
 
-        public event Action<byte[]> DataReceived;
+        public event Action<string> CommandReceived;
 
         private void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            Thread.Sleep(100);
-            var dataLength = _serialPort.BytesToRead;
-            var data = new byte[dataLength];
-            var nbrDataRead = _serialPort.Read(data, 0, dataLength);
-            if (nbrDataRead == 0) return;
-
-            DataReceived?.Invoke(data);
+            while (_serialPort.BytesToRead > 0)
+            {
+                var command = _serialPort.ReadLine();
+                command = command.Replace("\r", string.Empty);
+                CommandReceived?.Invoke(command);
+            }
         }
     }
 }

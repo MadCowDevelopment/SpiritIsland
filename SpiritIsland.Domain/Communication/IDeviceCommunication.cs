@@ -6,6 +6,6 @@ namespace SpiritIsland.Domain.Communication
     {
         void Send(string text);
 
-        event Action<byte[]> DataReceived;
+        event Action<string> CommandReceived;
     }
 }

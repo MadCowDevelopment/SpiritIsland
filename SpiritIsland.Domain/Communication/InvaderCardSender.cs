@@ -17,6 +17,7 @@ namespace SpiritIsland.Domain.Communication
         public void Send(Board board, InvaderCard explore, InvaderCard build, InvaderCard ravage)
         {
             var builder = new StringBuilder();
+            builder.Append("LED:");
             AppendInvaderCard(board, ravage, builder);
             AppendInvaderCard(board, explore, builder);
             AppendInvaderCard(board, build, builder);
