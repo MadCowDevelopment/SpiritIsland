@@ -12,12 +12,8 @@ void handleRemoteInput() {
   sensor1Value = analogRead(sensor1Pin);
   sensor2Value = analogRead(sensor2Pin);
 
-  if(sensor1Value < 180) {
-    topButtonPressed();
-  }
-  else if(sensor1Value > 900) {
-    bottomButtonPressed();
-  }
+  if(sensor1Value < 180) topButtonPressed();
+  else if(sensor1Value > 900) bottomButtonPressed();
   else middleButtonPressed();
 }
 

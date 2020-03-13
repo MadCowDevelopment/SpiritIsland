@@ -1,48 +1,51 @@
-const int SER = 8;
-const int LATCH = 9;
-const int CLK = 10;
+const int SER = 2;
+const int CLK = 3;
+const int LATCH = 4;
 
 const int ESCALATE = 6;
+
+#include "ShiftRegisterPWM.h"
+ShiftRegisterPWM sr(3, 16);
 
 const int sensor1Pin = A0; 
 const int sensor2Pin = A1;  
 
-const int R1 = 1;
-const int G1 = 2;
-const int Blue1 = 4;
-const int R2 = 8;
-const int G2 = 16;
-const int B2 = 32;
-const int R3 = 64;
-const int G3 = 128;
+const int R1 = 7;
+const int G1 = 6;
+const int Blue1 = 5;
+const int R2 = 4;
+const int G2 = 3;
+const int B2 = 2;
+const int R3 = 1;
+const int G3 = 0;
 
-const int B3 = 1;
-const int R4 = 2;
-const int B4 = 4;
-const int G4 = 8;
-const int R5 = 16;
-const int G5 = 32;
-const int B5 = 64;
-const int R6 = 128;
+const int B3 = 15;
+const int R4 = 14;
+const int B4 = 13;
+const int G4 = 12;
+const int R5 = 11;
+const int G5 = 10;
+const int B5 = 9;
+const int R6 = 8;
 
-const int B6 = 1;
-const int G6 = 2;
-const int R7 = 4;
-const int G7 = 8;
-const int B7 = 16;
-const int R8 = 32;
-const int G8 = 64;
-const int B8 = 128;
+const int B6 = 23;
+const int G6 = 22;
+const int R7 = 21;
+const int G7 = 20;
+const int B7 = 19;
+const int R8 = 18;
+const int G8 = 17;
+const int B8 = 16;
 
-int value = 0;
+int LEDs[24] = { R1, R2, R3, R4, R5, R6, R7, R8, G1, G2, G3, G4, G5, G6, G7, G8, Blue1, B2, B3, B4, B5, B6, B7, B8 };
 
+int intensity = 255;
 bool escalate;
-
 bool connected;
 
 void loop() {
   handleRemoteInput();
   readSerialPort();
   writeEscalate();  
-  delay(50);
+  delay(100);
 }
