@@ -35,9 +35,9 @@ void readSerialPort() {
     register3 += B7 * charToDigit(str[26]);
     register3 += B8 * charToDigit(str[27]);
 
-    int escalation = 255 * charToDigit(str[28]);
-    
     turnOnLeds(register1, register2, register3);
+
+    escalate = charToDigit(str[28]);
    }
  }
 }

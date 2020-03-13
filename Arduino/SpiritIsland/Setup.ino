@@ -5,6 +5,7 @@ void setup() {
 
   cycleColors(500);
   turnAllOff();
-
+  analogWrite(ESCALATE, 0);  
+  
   Serial.begin(9600);
 }

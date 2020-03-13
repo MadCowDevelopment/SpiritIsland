@@ -37,15 +37,26 @@ void turnOnLeds(int register1, int register2, int register3) {
   shiftOut(SER, CLK, MSBFIRST, register1);
   digitalWrite(LATCH, HIGH);
 }
+void writeEscalate() {
+  if(escalate) {
+    analogWrite(ESCALATE, 255);  
+  }
+  else {
+    analogWrite(ESCALATE, 0);  
+  }
+}
 
 void cycleColors(int delayMs) {
   turnAllRed();
+  analogWrite(ESCALATE, 255);  
   delay(delayMs);
 
   turnAllGreen();
+  analogWrite(ESCALATE, 0);  
   delay(delayMs);
 
   turnAllBlue();
+  analogWrite(ESCALATE, 255);  
   delay(delayMs);   
 }
 

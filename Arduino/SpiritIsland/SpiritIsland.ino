@@ -2,6 +2,8 @@ const int SER = 8;
 const int LATCH = 9;
 const int CLK = 10;
 
+const int ESCALATE = 6;
+
 const int sensor1Pin = A0; 
 const int sensor2Pin = A1;  
 
@@ -34,10 +36,13 @@ const int B8 = 128;
 
 int value = 0;
 
+bool escalate;
+
 bool connected;
 
 void loop() {
   handleRemoteInput();
-  readSerialPort();  
+  readSerialPort();
+  writeEscalate();  
   delay(50);
 }
