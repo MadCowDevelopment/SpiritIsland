@@ -20,15 +20,15 @@ void turnAllBlue() {
 
 void cycleColors(int delayMs) {
   turnAllRed();
-  analogWrite(ESCALATE, 255);  
+  analogWrite(PIN_ESCALATE, 255);  
   delay(delayMs);
 
   turnAllGreen();
-  analogWrite(ESCALATE, 0);  
+  analogWrite(PIN_ESCALATE, 0);  
   delay(delayMs);
 
   turnAllBlue();
-  analogWrite(ESCALATE, 255);  
+  analogWrite(PIN_ESCALATE, 255);  
   delay(delayMs); 
 }
 
@@ -37,8 +37,8 @@ void setLEDsFromState(String state) {
     sr.set(LEDs[i-4], intensity * charToDigit(state[i]));
   }
 
-  if(charToDigit(state[28])) analogWrite(ESCALATE, intensity);  
-  else analogWrite(ESCALATE, 0);
+  if(charToDigit(state[28])) analogWrite(PIN_ESCALATE, intensity);  
+  else analogWrite(PIN_ESCALATE, 0);
 }
 
 void cycleLands(int delayMs) {

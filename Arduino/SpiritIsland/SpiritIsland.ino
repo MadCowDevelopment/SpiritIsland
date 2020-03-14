@@ -1,14 +1,15 @@
-const int SER = 2;
-const int CLK = 3;
-const int LATCH = 4;
+const int PIN_SER = 2;
+const int PIN_CLK = 3;
+const int PIN_LATCH = 4;
 
-const int ESCALATE = 6;
+const int PIN_ESCALATE = 6;
 
 #include "ShiftRegisterPWM.h"
 ShiftRegisterPWM sr(3, 128);
 
 const int sensor1Pin = A0; 
 const int sensor2Pin = A1;  
+const int PIN_PHOTO = A3;
 
 const int R1 = 7;
 const int G1 = 6;
@@ -57,8 +58,9 @@ void updateIntensity() {
 
 void loop() {
   handleRemoteInput();
-  updateIntensity();
   readSerialPort();
+  readLightSensor();
+  updateIntensity();
   setLEDsFromState(lastLedState);
   delay(100);
 }
