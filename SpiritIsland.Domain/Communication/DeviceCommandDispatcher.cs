@@ -15,9 +15,9 @@ namespace SpiritIsland.Domain.Communication
 
         private void CommandReceived(string command)
         {
-            if (command.Contains("START")) _game.Start();
-            else if (command.Contains("EXPLORE")) _game.Explore();
-            else if (command.Contains("ADVANCE")) _game.Advance();
+            if (command.Contains("CMD:START")) _game.Start();
+            else if (command.Contains("CMD:EXPLORE")) _game.Explore();
+            else if (command.Contains("CMD:ADVANCE")) _game.Advance();            
         }
     }
 }

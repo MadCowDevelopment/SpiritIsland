@@ -12,7 +12,7 @@ void handleRemoteInput() {
   sensor1Value = analogRead(sensor1Pin);
   sensor2Value = analogRead(sensor2Pin);
 
-  if(sensor1Value < 180) topButtonPressed();
+  if(sensor2Value > 900) topButtonPressed();
   else if(sensor1Value > 900) bottomButtonPressed();
   else middleButtonPressed();
 }
@@ -21,7 +21,7 @@ void topButtonPressed() {
   if(!started) return;
   if(lastButton == TOP) return;  
   lastButton = TOP;  
-  Serial.println("EXPLORE");
+  Serial.println("CMD:EXPLORE");
 }
 
 void middleButtonPressed() {
@@ -29,7 +29,7 @@ void middleButtonPressed() {
   if(started) return;
   if(lastButton == MIDDLE) return;
   lastButton = MIDDLE;
-  Serial.println("START");
+  Serial.println("CMD:START");
   started = true;  
 }
 
@@ -37,5 +37,5 @@ void bottomButtonPressed() {
   if(!started) return;
   if(lastButton == BOTTOM) return;  
   lastButton = BOTTOM;  
-  Serial.println("ADVANCE");
+  Serial.println("CMD:ADVANCE");
 }
