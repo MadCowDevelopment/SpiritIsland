@@ -19,7 +19,7 @@ void handleRemoteInput() {
 
 void topButtonPressed() {  
   if(!started) return;
-  if(lastButton == TOP) return;  
+  if(lastButton == TOP) return;
   lastButton = TOP;  
   Serial.println("CMD:EXPLORE");
 }

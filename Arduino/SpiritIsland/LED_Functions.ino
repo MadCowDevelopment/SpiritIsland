@@ -18,11 +18,6 @@ void turnAllBlue() {
   for(int i=16; i<24; i++) sr.set(LEDs[i], 255);
 }
 
-void writeEscalate() {
-  if(escalate) analogWrite(ESCALATE, 255);  
-  else analogWrite(ESCALATE, 0);
-}
-
 void cycleColors(int delayMs) {
   turnAllRed();
   analogWrite(ESCALATE, 255);  
@@ -35,6 +30,15 @@ void cycleColors(int delayMs) {
   turnAllBlue();
   analogWrite(ESCALATE, 255);  
   delay(delayMs); 
+}
+
+void setLEDsFromState(String state) {  
+  for(int i=4; i<28; i++) {
+    sr.set(LEDs[i-4], intensity * charToDigit(state[i]));
+  }
+
+  if(charToDigit(state[28])) analogWrite(ESCALATE, intensity);  
+  else analogWrite(ESCALATE, 0);
 }
 
 void cycleLands(int delayMs) {
