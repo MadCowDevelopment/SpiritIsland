@@ -9,6 +9,7 @@ ShiftRegisterPWM sr(3, 128);
 
 const int sensor1Pin = A0; 
 const int sensor2Pin = A1;  
+const int PIN_POTI = A2;
 const int PIN_PHOTO = A3;
 
 const int R1 = 7;
@@ -41,7 +42,7 @@ const int B8 = 16;
 int LEDs[24] = { R1, R2, R3, R4, R5, R6, R7, R8, G1, G2, G3, G4, G5, G6, G7, G8, Blue1, B2, B3, B4, B5, B6, B7, B8 };
 String lastLedState = "LED:0000000000000000000000000";
 
-const int MAX_INTENSITY = 128;
+const int MAX_INTENSITY = 192;
 const int MIN_INTENSITY = 12;
 const int MS_UNTIL_DIM = 12000;
 int intensity = MAX_INTENSITY;
@@ -51,12 +52,17 @@ bool connected;
 unsigned long lastInputTime;
 
 void updateIntensity() {
+  int poti = analogRead(PIN_POTI);
+  int intensityPercent = map(poti, 10, 1023, 100, 10);
+  
   if(millis() - lastInputTime > MS_UNTIL_DIM) {
-    if(intensity > MIN_INTENSITY) intensity = MIN_INTENSITY;    
-  } else intensity = MAX_INTENSITY;  
+    if(intensity > MIN_INTENSITY) intensity = MIN_INTENSITY * intensityPercent / 100;    
+  } else intensity = MAX_INTENSITY * intensityPercent / 100;
+
+  intensity = constrain(intensity, MIN_INTENSITY, MAX_INTENSITY);
 }
 
-void loop() {
+void loop() {  
   handleRemoteInput();
   readSerialPort();
   readLightSensor();
