@@ -2,15 +2,15 @@ const int PIN_SER = 2;
 const int PIN_CLK = 3;
 const int PIN_LATCH = 4;
 
-const int PIN_ESCALATE = 6;
+const int PIN_ESCALATE = 5;
 
 #include "ShiftRegisterPWM.h"
 ShiftRegisterPWM sr(3, 128);
 
-const int sensor1Pin = A0; 
-const int sensor2Pin = A1;  
-const int PIN_POTI = A2;
-const int PIN_PHOTO = A3;
+const int PIN_PHOTO = A0;
+const int sensor1Pin = A1; 
+const int sensor2Pin = A2;  
+
 
 const int R1 = 7;
 const int G1 = 6;
@@ -39,7 +39,8 @@ const int R8 = 18;
 const int G8 = 17;
 const int B8 = 16;
 
-int LEDs[24] = { R1, R2, R3, R4, R5, R6, R7, R8, G1, G2, G3, G4, G5, G6, G7, G8, Blue1, B2, B3, B4, B5, B6, B7, B8 };
+//int LEDs[24] = { R1, R2, R3, R4, R5, R6, R7, R8, G1, G2, G3, G4, G5, G6, G7, G8, Blue1, B2, B3, B4, B5, B6, B7, B8 };
+int LEDs[24] = { 7,6,5,4,3,2,1,0, 15,14,13,12,11,10,9,8, 23,22,21,20,19,18,17,16 };
 String lastLedState = "LED:0000000000000000000000000";
 
 const int MAX_INTENSITY = 192;
@@ -52,7 +53,7 @@ bool connected;
 unsigned long lastInputTime;
 
 void updateIntensity() {
-  int poti = analogRead(PIN_POTI);
+  int poti = 1023;
   int intensityPercent = map(poti, 10, 1023, 100, 10);
   
   if(millis() - lastInputTime > MS_UNTIL_DIM) {

@@ -7,7 +7,9 @@ void setup() {
   initLightSensor();
 
   cycleColors(500);
+
   turnAllOff();
+
   analogWrite(PIN_ESCALATE, 0);
 
   Serial.begin(9600);  

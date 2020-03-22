@@ -9,7 +9,6 @@ void initLightSensor() {
 }
 void readLightSensor() {
   int brightness = analogRead(PIN_PHOTO);
-  
   int average = 0;
   for(int i=0; i<10; i++) {
     average += lastLightValues[i];
@@ -18,7 +17,7 @@ void readLightSensor() {
 
   if(average - brightness > abs(20)) {
     lastInputTime = millis();
-  }
+  }  
 
   lastLightValues[currentIndex++] = brightness;  
   currentIndex = currentIndex % 10;

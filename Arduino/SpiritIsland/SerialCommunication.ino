@@ -11,7 +11,3 @@ void readSerialPort() {
     }
   }
 }
-
-int charToDigit(char character){
-  return int(character) - 48;
-}
