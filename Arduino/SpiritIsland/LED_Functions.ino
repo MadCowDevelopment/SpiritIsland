@@ -3,19 +3,19 @@ void turnAllOff() {
 }
 
 void turnAllRed() {
-  for(int i=0; i<8; i++) sr.set(LEDs[i], 255);     
+  for(int i=0; i<8; i++) sr.set(LEDs[i], intensity);     
   for(int i=8; i<24; i++) sr.set(LEDs[i], 0);
 }
 
 void turnAllGreen() {
   for(int i=0; i<8; i++) sr.set(LEDs[i], 0);    
-  for(int i=8; i<16; i++) sr.set(LEDs[i], 255);    
+  for(int i=8; i<16; i++) sr.set(LEDs[i], intensity);    
   for(int i=16; i<24; i++) sr.set(LEDs[i], 0);
 }
 
 void turnAllBlue() {
   for(int i=0; i<16; i++) sr.set(LEDs[i], 0);    
-  for(int i=16; i<24; i++) sr.set(LEDs[i], 255);
+  for(int i=16; i<24; i++) sr.set(LEDs[i], intensity);
 }
 
 void cycleColors(int delayMs) {

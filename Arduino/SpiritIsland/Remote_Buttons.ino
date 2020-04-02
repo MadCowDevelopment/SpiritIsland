@@ -6,8 +6,6 @@ int lastButton = 0;
 int sensor1Value = 0;
 int sensor2Value = 0; 
 
-bool started = false;
-
 void handleRemoteInput() {
   sensor1Value = analogRead(sensor1Pin);
   sensor2Value = analogRead(sensor2Pin);

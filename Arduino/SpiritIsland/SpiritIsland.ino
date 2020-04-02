@@ -43,18 +43,19 @@ const int B8 = 16;
 int LEDs[24] = { 7,6,5,4,3,2,1,0, 15,14,13,12,11,10,9,8, 23,22,21,20,19,18,17,16 };
 String lastLedState = "LED:0000000000000000000000000";
 
-const int MAX_INTENSITY = 192;
+const int MAX_INTENSITY = 255 ;
 const int MIN_INTENSITY = 12;
 const int MS_UNTIL_DIM = 12000;
 int intensity = MAX_INTENSITY;
 
-bool connected;
+bool connected = false;
+bool started = false;
 
 unsigned long lastInputTime;
 
 void updateIntensity() {
   int poti = 1023;
-  int intensityPercent = map(poti, 10, 1023, 100, 10);
+  int intensityPercent = 100;
   
   if(millis() - lastInputTime > MS_UNTIL_DIM) {
     if(intensity > MIN_INTENSITY) intensity = MIN_INTENSITY * intensityPercent / 100;    
@@ -68,6 +69,8 @@ void loop() {
   readSerialPort();
   readLightSensor();
   updateIntensity();
-  setLEDsFromState(lastLedState);
+  if(started) setLEDsFromState(lastLedState);
+  else cycleColors(500);
+
   delay(100);
 }
