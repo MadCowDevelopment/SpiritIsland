@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Adversaries\" />
     <Folder Include="Scenarios\" />
   </ItemGroup>
 

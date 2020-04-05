@@ -40,16 +40,25 @@ namespace SpiritIsland.Domain.Cards
             };
         }
 
-        public InvaderDeck Create()
+        public InvaderDeck Create(string order)
         {
+            var numbers = order.ToCharArray().Select(p => int.Parse(p.ToString())).ToList();
+
             Stage1Cards.Shuffle();
             Stage2Cards.Shuffle();
             Stage3Cards.Shuffle();
 
+            var stage1 = new Queue<InvaderCard>(Stage1Cards);
+            var stage2 = new Queue<InvaderCard>(Stage2Cards);
+            var stage3 = new Queue<InvaderCard>(Stage3Cards);
+            var invaderQueues = new List<Queue<InvaderCard>> { stage1, stage2, stage3 };
+
             var invaderCards = new List<InvaderCard>();
-            invaderCards.AddRange(Stage1Cards.Take(3));
-            invaderCards.AddRange(Stage2Cards.Take(4));
-            invaderCards.AddRange(Stage3Cards.Take(5));
+            foreach (var number in numbers)
+            {
+                invaderCards.Add(invaderQueues[number - 1].Dequeue());
+            }
+
             return new InvaderDeck(invaderCards);
         }
     }

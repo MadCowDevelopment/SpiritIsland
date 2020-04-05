@@ -2,6 +2,6 @@
 {
     public interface IInvaderDeckFactory
     {
-        InvaderDeck Create();
+        InvaderDeck Create(string order);
     }
 }
