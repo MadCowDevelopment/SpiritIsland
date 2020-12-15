@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
@@ -41,16 +42,22 @@ namespace SpiritIsland.CLI
             }
 
             var line = Console.ReadLine();
-            if (int.TryParse(line, out int selection) && selection < adversaries.Count)
+            if (int.TryParse(line, out int selection) && selection > 0 && selection < adversaries.Count)
             {
-                _adversary = adversaries[selection - 1];
-                _logger.Information($"Selected adversary: {_adversary.DisplayName}");
-                _logger.Warning("Select level (1-6):");
-                line = Console.ReadLine();
-                if (int.TryParse(line, out int level) && level >= 1 && level <= 6) _adversary.Initialize(level);
-                else _adversary.Initialize(1);
-                _adversary.ShowMessageRequested += p => _logger.Warning(p);
+                InitializeAdversary(adversaries, selection);
             }
+        }
+
+        private static void InitializeAdversary(ReadOnlyCollection<Adversary> adversaries, int selection)
+        {
+            string line;
+            _adversary = adversaries[selection - 1];
+            _logger.Information($"Selected adversary: {_adversary.DisplayName}");
+            _logger.Warning("Select level (1-6):");
+            line = Console.ReadLine();
+            if (int.TryParse(line, out int level) && level >= 1 && level <= 6) _adversary.Initialize(level);
+            else _adversary.Initialize(1);
+            _adversary.ShowMessageRequested += p => _logger.Warning(p);
         }
 
         private static void GameLoop(string portName)
