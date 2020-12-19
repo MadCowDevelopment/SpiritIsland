@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpiritIsland.Domain.Cards
 {
@@ -15,7 +16,23 @@ namespace SpiritIsland.Domain.Cards
 
         public InvaderCard Dequeue()
         {
-            return _cards.Dequeue();
+            var card = _cards.Dequeue();
+            CardDequeued?.Invoke(new CardDequeuedEventArgs(card, _cards.Count));
+            return card;
         }
+
+        public event Action<CardDequeuedEventArgs> CardDequeued;
+    }
+
+    public class CardDequeuedEventArgs
+    {
+        public CardDequeuedEventArgs(InvaderCard card, int remainingCards)
+        {
+            Card = card;
+            RemainingCards = remainingCards;
+        }
+        
+        public InvaderCard Card { get; }
+        public int RemainingCards { get; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
@@ -11,16 +11,16 @@ using SpiritIsland.Domain.Communication;
 
 namespace SpiritIsland.CLI
 {
-    class Program
+    internal static class Program
     {
-        private static readonly ManualResetEventSlim _startEvent = new ManualResetEventSlim();
-        private static readonly ManualResetEventSlim _resetEvent = new ManualResetEventSlim();
+        private static readonly ManualResetEventSlim StartResetEvent = new ManualResetEventSlim();
+        private static readonly ManualResetEventSlim UserInputResetEvent = new ManualResetEventSlim();
 
         private static ILogger _logger;
-        private static Game game;
+        private static Game _game;
         private static Adversary _adversary;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             _logger = CreateLogger();
             PrintIntro();
@@ -34,28 +34,27 @@ namespace SpiritIsland.CLI
         {
             var adversaryStore = new AdversaryStore();
             var adversaries = adversaryStore.Adversaries;
-            _logger.Information("Choose adverary: ");
+            _logger.Information("Choose adversary: ");
             _logger.Information("0 - None (Default)");
-            for (int i = 0; i < adversaries.Count; i++)
+            for (var i = 0; i < adversaries.Count; i++)
             {
                 _logger.Information($"{i + 1} - {adversaries[i].DisplayName}");
             }
 
             var line = Console.ReadLine();
-            if (int.TryParse(line, out int selection) && selection > 0 && selection <= adversaries.Count)
+            if (int.TryParse(line, out var selection) && selection > 0 && selection <= adversaries.Count)
             {
                 InitializeAdversary(adversaries, selection);
             }
         }
 
-        private static void InitializeAdversary(ReadOnlyCollection<Adversary> adversaries, int selection)
+        private static void InitializeAdversary(IReadOnlyList<Adversary> adversaries, int selection)
         {
-            string line;
             _adversary = adversaries[selection - 1];
             _logger.Information($"Selected adversary: {_adversary.DisplayName}");
             _logger.Warning("Select level (1-6):");
-            line = Console.ReadLine();
-            if (int.TryParse(line, out int level) && level >= 1 && level <= 6) _adversary.Initialize(level);
+            var line = Console.ReadLine();
+            if (int.TryParse(line, out var level) && level >= 1 && level <= 6) _adversary.Initialize(level);
             else _adversary.Initialize(1);
             _adversary.ShowMessageRequested += p => _logger.Warning(p);
         }
@@ -65,8 +64,8 @@ namespace SpiritIsland.CLI
             StartGameLoop(portName);
             StartUserInputLoop();
 
-            _startEvent.Wait();
-            _resetEvent.Wait();
+            StartResetEvent.Wait();
+            UserInputResetEvent.Wait();
         }
 
         private static void StartGameLoop(string portName)
@@ -81,18 +80,30 @@ namespace SpiritIsland.CLI
 
                 _logger.Information("Waiting for the game to start...");
 
-                game = new Game(boardRepository, invaderCardSender, new InvaderDeckFactory(), _adversary);
-                game.GameStarted += () =>
+                _game = new Game(boardRepository, invaderCardSender, new InvaderDeckFactory(), _adversary);
+                _game.InvaderDeck.CardDequeued += p =>
                 {
-                    _startEvent.Set();
+                    var lands = string.Join(" - ", p.Card.Lands);
+                    var escalation = p.Card.Escalation ? "Escalation, " : string.Empty;
+                    _logger.Information(
+                        $"Card drawn ({p.RemainingCards} remaining):  Stage {p.Card.Stage}, {escalation}{lands}");
+                };
+                
+                _game.GameStarted += () =>
+                {
+                    StartResetEvent.Set();
                     Console.Clear();
                 };
 
-                game.GameLost += () => _resetEvent.Set();
+                _game.GameLost += () =>
+                {
+                    UserInputResetEvent.Set();
+                    _logger.Error("You lost the game!");
+                };
 
-                new DeviceCommandDispatcher(deviceCommunication, game);
+                new DeviceCommandDispatcher(deviceCommunication, _game);
 
-                await game.Initialize(new GameSettings(new[] { "C" }));
+                await _game.Initialize(new GameSettings(new[] { "C" }));
             });
         }
 
@@ -100,18 +111,18 @@ namespace SpiritIsland.CLI
         {
             Task.Run(() =>
             {
-                while (!_resetEvent.IsSet)
+                while (!UserInputResetEvent.IsSet)
                 {
                     var input = Console.ReadLine();
-                    switch (input.ToUpper())
+                    switch (input?.ToUpper())
                     {
                         case "EXPLORE":
                         case "E":
-                            game.Explore();
+                            _game.Explore();
                             break;
                         case "ADVANCE":
                         case "A":
-                            game.Advance();
+                            _game.Advance();
                             break;
                         case "HELP":
                         case "H":
