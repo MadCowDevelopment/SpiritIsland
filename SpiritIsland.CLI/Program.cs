@@ -42,7 +42,7 @@ namespace SpiritIsland.CLI
             }
 
             var line = Console.ReadLine();
-            if (int.TryParse(line, out int selection) && selection > 0 && selection < adversaries.Count)
+            if (int.TryParse(line, out int selection) && selection > 0 && selection <= adversaries.Count)
             {
                 InitializeAdversary(adversaries, selection);
             }

@@ -8,6 +8,7 @@ namespace SpiritIsland.Domain.Adversaries
 
         public void Handle(Game game)
         {
+            if (Level < 4) return;
             var nextCard = game.InvaderDeck.Dequeue();
             ShowMessageRequested?.Invoke($"Royal Backing: On each board, before explore add 1 town to the {nextCard.Lands.First()} with the fewest invaders.");
         }
