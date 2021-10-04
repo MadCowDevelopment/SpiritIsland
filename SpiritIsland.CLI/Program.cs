@@ -75,12 +75,14 @@ namespace SpiritIsland.CLI
 
                 var boardRepository = new InMemoryBoardRepository();
                 var deviceCommunication = new SerialPortDeviceCommunication(portName, _logger);
-                await deviceCommunication.Connect();
+                
                 var invaderCardSender = new InvaderCardSender(deviceCommunication);
 
                 _logger.Information("Waiting for the game to start...");
 
                 _game = new Game(boardRepository, invaderCardSender, new InvaderDeckFactory(), _adversary);
+                await _game.Initialize(new GameSettings(new[] { "C" }));
+
                 _game.InvaderDeck.CardDequeued += p =>
                 {
                     var lands = string.Join(" - ", p.Card.Lands);
@@ -100,10 +102,9 @@ namespace SpiritIsland.CLI
                     UserInputResetEvent.Set();
                     _logger.Error("You lost the game!");
                 };
-
+                                
                 new DeviceCommandDispatcher(deviceCommunication, _game);
-
-                await _game.Initialize(new GameSettings(new[] { "C" }));
+                await deviceCommunication.Connect();
             });
         }
 
